@@ -1,3 +1,4 @@
+<link rel="stylesheet" href="styles.css" />
 <?php
 
 header("Access-Control-Allow-Origin: *");
@@ -64,11 +65,33 @@ $superheroes = [
       "biography" => "Notably powerful, Wanda Maximoff has fought both against and with the Avengers, attempting to hone her abilities and do what she believes is right to help the world.",
   ], 
 ];
-
+$q= $_REQUEST["q"];
+ $found = false;
 ?>
 
-<ul>
-<?php foreach ($superheroes as $superhero): ?>
-  <li><?= $superhero['alias']; ?></li>
-<?php endforeach; ?>
-</ul>
+
+<?php if ($q===""): ?>
+    <ul>
+        <?php foreach ($superheroes as $superhero): ?>
+            <li><?= $superhero['alias']; ?></li>
+        <?php endforeach; ?>
+    </ul>
+
+<?php else: ?>
+    
+    <?php foreach($superheroes as $hero): ?>
+        <?php if((strtoupper($hero['name']))===$q || (strtoupper($hero['alias'])===$q)): ?>
+            <div id=searchResults>
+                <h3><?= $hero ['alias']; ?> </h3> 
+                <h4> A.K.A <?= $hero ['name']; ?></h4> 
+                <p><?= $hero ['biography']; ?></p>
+            </div>
+            <?php $found = true; ?>
+        <?php endif; ?>
+    <?php endforeach; ?>
+    <?php if($found === false): ?>
+        <div id= "notFound">
+            <h3> SUPERHERO NOT FOUND </h3>
+        </div>
+    <?php endif; ?>
+<?php endif; ?>
